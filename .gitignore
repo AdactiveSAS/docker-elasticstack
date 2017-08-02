@@ -52,3 +52,4 @@ fabric.properties
 
 /elastic-stack/data/
 /elastic-stack/.env
+/elastic-stack/logs/

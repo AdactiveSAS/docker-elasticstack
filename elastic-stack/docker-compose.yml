@@ -4,6 +4,11 @@ services:
   elastic-stack:
     build:
       context: .
+      args:
+        ELASTIC_S3_BACKUP_REGION: ${ELASTIC_S3_BACKUP_REGION}
+        ELASTIC_S3_BACKUP_BUCKET: ${ELASTIC_S3_BACKUP_BUCKET}
+        ELASTIC_S3_BACKUP_SECRET_KEY: ${ELASTIC_S3_BACKUP_SECRET_KEY}
+        ELASTIC_S3_BACKUP_ACCESS_KEY: ${ELASTIC_S3_BACKUP_ACCESS_KEY}
     restart: always
     ports:
       - "${KIBANA_PORT}:5601"
@@ -15,4 +20,8 @@ services:
       - "./conf/logstash/patterns:/etc/logstash/patterns"
       - "./conf/logstash/templates:/etc/logstash/templates"
       - "./data:/var/lib/elacticsearch"
+      - "./logs/elasticsearch:/var/log/elasticsearch"
+      - "./logs/kibana:/var/log/kibana"
+      - "./logs/logstash:/var/log/logstash"
+      - "./logs/elasticsearch-backup:/var/log/elasticsearch-backup"
     tty: true
