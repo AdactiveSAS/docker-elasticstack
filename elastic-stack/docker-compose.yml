@@ -1,0 +1,18 @@
+version: "2.0"
+
+services:
+  elastic-stack:
+    build:
+      context: .
+    restart: always
+    ports:
+      - "${KIBANA_PORT}:5601"
+      - "${ELASTIC_SEARCH_REST_API_PORT}:9200"
+      - "${ELASTIC_SEARCH_JAVA_API_PORT}:9300"
+      - "${LOGSTASH_PORT}:5044"
+    volumes:
+      - "./conf/logstash/conf.d/logstash.conf:/etc/logstash/conf.d/logstash.conf"
+      - "./conf/logstash/patterns:/etc/logstash/patterns"
+      - "./conf/logstash/templates:/etc/logstash/templates"
+      - "./data:/var/lib/elacticsearch"
+    tty: true

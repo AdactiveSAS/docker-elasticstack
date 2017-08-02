@@ -4,26 +4,48 @@ Elastic Stack sample setup for Nginx with Filebeat using Docker.
 
 ## Server:  Elasticsearch, Logstash & Kibana
 
-### Build
+### Using docker-compose
+
+> You must install docker-compose first: [https://docs.docker.com/compose/install/](https://docs.docker.com/compose/install/)
+
+- Move to the project
+```
+cd ./elastic-stack
+```
+
+- Set environment variables
+```
+cp .env.template .env
+```
+
+- Run
+```
+docker-compose up -d --build
+```
+
+### Old way: Docker
+#### Build
 ```
 cd ./elastic-stack
 docker build -t naei/elastic-stack .
 ```
 
-### Run
+At this point, the Kibana interface should be available at `http://<server>:5601`.
+
+#### Run
 ```
 docker run \
 -p 5601:5601 -p 5044:5044 -p 9200:9200 -p 9300:9300 \
--v <path-to>/elastic-stack/conf/logstash/conf.d/logstash.conf:/etc/logstash/conf.d/logstash.conf \
--v <path-to>/elastic-stack/conf/logstash/patterns:/etc/logstash/patterns \
--v <path-to>/elastic-stack/conf/logstash/templates:/etc/logstash/templates \
--v <path-to-save-elastic-data>:/var/lib/elacticsearch \
+-v ${PWD}/conf/logstash/conf.d/logstash.conf:/etc/logstash/conf.d/logstash.conf \
+-v ${PWD}/conf/logstash/patterns:/etc/logstash/patterns \
+-v ${PWD}/conf/logstash/templates:/etc/logstash/templates \
+-v ${PWD}/data:/var/lib/elacticsearch \
 -d naei/elastic-stack
 ```
 
 At this point, the Kibana interface should be available at `http://<server>:5601`.
 
-#### Troubleshooting
+### Troubleshooting
 In some cases, Elasticsearch might not start properly. In case of trouble, you can try the following commands **on the host** to fix it:
 - Increase the number of memory map areas: `sysctl -w vm.max_map_count=262144`
 - Delete all stopped containers (including data-only containers); `docker rm $(docker ps -aq)`
