@@ -4,23 +4,28 @@ Elastic Stack sample setup for Nginx with Filebeat using Docker.
 
 ## Server:  Elasticsearch, Logstash & Kibana
 
-### Using docker-compose
+### Basic docker-compose
 
 > You must install docker-compose first: [https://docs.docker.com/compose/install/](https://docs.docker.com/compose/install/)
 
-- Move to the project
+Move to the project and set environment variables
 ```
 cd ./elastic-stack
-```
-
-- Set environment variables
-```
 cp .env.template .env
 ```
 
-- Run
+Build and run:
 ```
 docker-compose up -d --build
+```
+
+### Alternative docker-compose with Amazon S3 backup
+
+On your host, set your S3 credentials into `elastic-stack/amazon-backup/entrypoint.sh`
+
+Build and run:
+```
+docker-compose -f docker-compose-with-amazon-backup.yml up --build
 ```
 
 ### Old way: Docker
