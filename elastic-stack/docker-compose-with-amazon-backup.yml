@@ -5,6 +5,11 @@ services:
     build:
       context: .
     restart: always
+    ports:
+      - "5601:5601"
+      - "9200:9200"
+      - "9300:9300"
+      - "5044:5044"
     volumes:
       # entrypoint
       - "./amazon-backup/entrypoint.sh:/entrypoint.sh"
