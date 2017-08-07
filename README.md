@@ -10,6 +10,7 @@ Elastic Stack sample setup for Nginx with Filebeat using Docker.
 
 Build and run:
 ```
+cd ./elastic-stack
 docker-compose up -d --build
 ```
 
