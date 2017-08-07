@@ -8,12 +8,6 @@ Elastic Stack sample setup for Nginx with Filebeat using Docker.
 
 > You must install docker-compose first: [https://docs.docker.com/compose/install/](https://docs.docker.com/compose/install/)
 
-Move to the project and set environment variables
-```
-cd ./elastic-stack
-cp .env.template .env
-```
-
 Build and run:
 ```
 docker-compose up -d --build
@@ -22,6 +16,12 @@ docker-compose up -d --build
 ### Alternative docker-compose with Amazon S3 backup
 
 On your host, set your S3 credentials into `elastic-stack/amazon-backup/entrypoint.sh`
+
+Move to the project and set environment variables
+```
+cd ./elastic-stack
+cp amazon-backup/.env.template amazon-backup/.env
+```
 
 Build and run:
 ```
