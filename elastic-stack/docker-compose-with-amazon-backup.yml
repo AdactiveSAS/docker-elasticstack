@@ -5,6 +5,8 @@ services:
     build:
       context: .
     restart: always
+    env_file:
+      - amazon-backup/.env
     ports:
       - "5601:5601"
       - "9200:9200"
@@ -22,6 +24,7 @@ services:
       - "./amazon-backup/elastic_db_backup.js:/var/lib/elasticsearch-backup/elastic_db_backup.js"
       # database
       - "./data:/var/lib/elasticsearch"
+      - "./repository-s3:/etc/elasticsearch/repository-s3"
       # logs
       - "./logs/elasticsearch:/var/log/elasticsearch"
       - "./logs/kibana:/var/log/kibana"

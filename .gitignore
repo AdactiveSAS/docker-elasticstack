@@ -53,3 +53,5 @@ fabric.properties
 /elastic-stack/data/
 /elastic-stack/.env
 /elastic-stack/logs/
+/elastic-stack/repository-s3/
+/elastic-stack/amazon-backup/.env

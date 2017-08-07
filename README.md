@@ -25,7 +25,7 @@ On your host, set your S3 credentials into `elastic-stack/amazon-backup/entrypoi
 
 Build and run:
 ```
-docker-compose -f docker-compose-with-amazon-backup.yml up --build
+docker-compose -f docker-compose-with-amazon-backup.yml up --build -d
 ```
 
 ### Old way: Docker
