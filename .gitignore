@@ -55,3 +55,4 @@ fabric.properties
 /elastic-stack/logs/
 /elastic-stack/repository-s3/
 /elastic-stack/amazon-backup/.env
+/elastic-stack/conf/ssl/
