@@ -26,6 +26,7 @@ else
     service elasticsearch start
 fi
 
+service cron start
 service kibana start
 nohup /usr/share/logstash/bin/logstash --path.settings /etc/logstash -f /etc/logstash/conf.d/logstash.conf > /var/log/logstash/logstash_run.log 2>&1 &
 
