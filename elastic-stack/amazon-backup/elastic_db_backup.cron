@@ -1,0 +1,1 @@
+@midnight   root    DATE=`date +\%Y-\%m-\%d` && /usr/bin/nodejs /var/lib/elasticsearch-backup/elastic_db_backup.js >> /var/log/elasticsearch-backup/${DATE}.log 2>&1

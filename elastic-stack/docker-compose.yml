@@ -1,0 +1,26 @@
+version: "2.0"
+
+services:
+  elastic-stack:
+    build:
+      context: .
+    restart: always
+    ports:
+      - "5601:5601"
+      - "9200:9200"
+      - "9300:9300"
+      - "5044:5044"
+    volumes:
+      # conf
+      - "./conf/logstash/conf.d/logstash.conf:/etc/logstash/conf.d/logstash.conf"
+      - "./conf/logstash/patterns:/etc/logstash/patterns"
+      - "./conf/logstash/templates:/etc/logstash/templates"
+      # database
+      - "./data:/var/lib/elacticsearch" 
+      # logs
+      - "./logs/elasticsearch:/var/log/elasticsearch" 
+      - "./logs/kibana:/var/log/kibana" 
+      - "./logs/logstash:/var/log/logstash" 
+      - "./logs/elasticsearch-backup:/var/log/elasticsearch-backup" 
+    tty: true
+    
