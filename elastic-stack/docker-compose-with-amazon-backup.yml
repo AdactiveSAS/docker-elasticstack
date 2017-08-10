@@ -1,0 +1,34 @@
+version: "2.0"
+
+services:
+  elastic-stack:
+    build:
+      context: .
+    restart: always
+    env_file:
+      - amazon-backup/.env
+    ports:
+      - "5601:5601"
+      - "9200:9200"
+      - "9300:9300"
+      - "5044:5044"
+    volumes:
+      # entrypoint
+      - "./amazon-backup/entrypoint.sh:/entrypoint.sh"
+      # elastic stack conf files
+      - "./conf/logstash/conf.d/logstash.conf:/etc/logstash/conf.d/logstash.conf"
+      - "./conf/logstash/patterns:/etc/logstash/patterns"
+      - "./conf/logstash/templates:/etc/logstash/templates"
+      # elastic backup cron conf
+      - "./amazon-backup/elastic_db_backup.cron:/etc/cron.d/elastic_db_backup"
+      - "./amazon-backup/elastic_db_backup.js:/var/lib/elasticsearch-backup/elastic_db_backup.js"
+      # database
+      - "./data:/var/lib/elasticsearch"
+      - "./repository-s3:/etc/elasticsearch/repository-s3"
+      # logs
+      - "./logs/elasticsearch:/var/log/elasticsearch"
+      - "./logs/kibana:/var/log/kibana"
+      - "./logs/logstash:/var/log/logstash"
+      - "./logs/elasticsearch-backup:/var/log/elasticsearch-backup"
+    entrypoint: ["/entrypoint.sh"]
+    tty: true

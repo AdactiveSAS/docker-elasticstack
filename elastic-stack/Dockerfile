@@ -26,14 +26,14 @@ RUN \
   sed -i "s/#server.host:.*/server.host: 0.0.0.0/" /etc/kibana/kibana.yml
 
 EXPOSE \
-  # Elasticsearch RESTful API / Java API
+# Elasticsearch RESTful API / Java API
   9200 9300 \
-  # Kibana
+# Kibana
   5601 \
-  # Logstash
+# Logstash
   5044
 
-CMD \
+ENTRYPOINT \
   chown -R elasticsearch:elasticsearch /var/lib/elasticsearch && \
   service elasticsearch start && \
   service kibana start && \
