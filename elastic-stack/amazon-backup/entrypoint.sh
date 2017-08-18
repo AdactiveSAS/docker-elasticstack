@@ -12,7 +12,7 @@ chmod 0644 /etc/cron.d/elastic_db_backup
 if [ ! "$(ls -A /etc/elasticsearch/repository-s3)" ]; then
     echo "Installing repository-s3 \n"
 
-    if [ ! -z "${PROXY_HOST}" ]; then
+    if [ -z "${PROXY_HOST}" ]; then
         echo "No proxy";
     else
         echo "Using proxy ${PROXY_HOST}";
