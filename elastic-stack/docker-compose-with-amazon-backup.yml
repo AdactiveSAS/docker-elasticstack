@@ -4,9 +4,24 @@ services:
   elastic-stack:
     build:
       context: .
+      args:
+        http_proxy: "http://${PROXY_HOST}:${PROXY_PORT}"
+        https_proxy: "http://${PROXY_HOST}:${PROXY_PORT}"
+        ftp_proxy: "http://${PROXY_HOST}:${PROXY_PORT}"
+        no_proxy: "127.0.0.1, localhost"
+        PROXY_HOST: "${PROXY_HOST}"
+        PROXY_PORT: "${PROXY_PORT}"
     restart: always
     env_file:
       - amazon-backup/.env
+    environment:
+      http_proxy: "http://${PROXY_HOST}:${PROXY_PORT}"
+      https_proxy: "http://${PROXY_HOST}:${PROXY_PORT}"
+      ftp_proxy: "http://${PROXY_HOST}:${PROXY_PORT}"
+      rsync_proxy: "http://${PROXY_HOST}:${PROXY_PORT}"
+      no_proxy: "127.0.0.1, localhost"
+      PROXY_HOST: "${PROXY_HOST}"
+      PROXY_PORT: "${PROXY_PORT}"
     ports:
       - "5601:5601"
       - "9200:9200"

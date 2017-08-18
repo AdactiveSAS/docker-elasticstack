@@ -12,6 +12,13 @@ chmod 0644 /etc/cron.d/elastic_db_backup
 if [ ! "$(ls -A /etc/elasticsearch/repository-s3)" ]; then
     echo "Installing repository-s3 \n"
 
+    if [ ! -z "${PROXY_HOST}" ]; then
+        echo "No proxy";
+    else
+        echo "Using proxy ${PROXY_HOST}";
+        export ES_JAVA_OPTS="$ES_JAVA_OPTS -DproxyHost=${PROXY_HOST} -DproxyPort=${PROXY_PORT}";
+    fi
+
     # install repository-s3 plugin
     /usr/share/elasticsearch/bin/elasticsearch-plugin install -b repository-s3
 

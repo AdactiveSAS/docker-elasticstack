@@ -16,12 +16,18 @@ docker-compose up -d --build
 
 ### Alternative docker-compose with Amazon S3 backup
 
-On your host, set your S3 credentials into `elastic-stack/amazon-backup/entrypoint.sh`
-
 Move to the project and set environment variables
 ```
 cd ./elastic-stack
 cp amazon-backup/.env.template amazon-backup/.env
+```
+
+On your host, set your S3 credentials into `elastic-stack/amazon-backup/.env`
+
+> If your behind a proxy, then you'll need to create `elastic-stack/.env` file like this
+```
+PROXY_HOST=172.32.21.213
+PROXY_PORT=3128
 ```
 
 Build and run:
