@@ -6,18 +6,21 @@ chown -R elasticsearch:elasticsearch /var/lib/elasticsearch
 # Make sure dependencies are installed
 apt-get install -y curl nodejs cron
 
+cp -f /root/elastic_db_backup /etc/cron.d/elastic_db_backup
+
 # restore rights on cron
 chmod 0644 /etc/cron.d/elastic_db_backup
+chown root /etc/cron.d/elastic_db_backup
+
+if [ -z "${PROXY_HOST}" ]; then
+    echo "No proxy";
+else
+    echo "Using proxy ${PROXY_HOST}";
+    export ES_JAVA_OPTS="$ES_JAVA_OPTS -DproxyHost=${PROXY_HOST} -DproxyPort=${PROXY_PORT}";
+fi
 
 if [ ! "$(ls -A /etc/elasticsearch/repository-s3)" ]; then
-    echo "Installing repository-s3 \n"
-
-    if [ -z "${PROXY_HOST}" ]; then
-        echo "No proxy";
-    else
-        echo "Using proxy ${PROXY_HOST}";
-        export ES_JAVA_OPTS="$ES_JAVA_OPTS -DproxyHost=${PROXY_HOST} -DproxyPort=${PROXY_PORT}";
-    fi
+    echo "Installing repository-s3"
 
     # install repository-s3 plugin
     /usr/share/elasticsearch/bin/elasticsearch-plugin install -b repository-s3

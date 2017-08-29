@@ -33,7 +33,7 @@ services:
       - "./conf/logstash/patterns:/etc/logstash/patterns"
       - "./conf/logstash/templates:/etc/logstash/templates"
       # elastic backup cron conf
-      - "./amazon-backup/elastic_db_backup.cron:/etc/cron.d/elastic_db_backup"
+      - "./amazon-backup/elastic_db_backup.cron:/root/elastic_db_backup"
       - "./amazon-backup/elastic_db_backup.js:/var/lib/elasticsearch-backup/elastic_db_backup.js"
       # database
       - "./data:/var/lib/elasticsearch"
