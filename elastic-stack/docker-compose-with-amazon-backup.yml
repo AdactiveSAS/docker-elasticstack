@@ -5,19 +5,19 @@ services:
     build:
       context: .
       args:
-        http_proxy: "http://${PROXY_HOST}:${PROXY_PORT}"
-        https_proxy: "http://${PROXY_HOST}:${PROXY_PORT}"
-        ftp_proxy: "http://${PROXY_HOST}:${PROXY_PORT}"
-        no_proxy: "127.0.0.1, localhost"
+        http_proxy: "${PROXY_URL}"
+        https_proxy: "${PROXY_URL}"
+        ftp_proxy: "${PROXY_URL}"
+        no_proxy: "127.0.0.1,localhost,${NO_PROXY}"
     restart: always
     env_file:
       - amazon-backup/.env
     environment:
-      http_proxy: "http://${PROXY_HOST}:${PROXY_PORT}"
-      https_proxy: "http://${PROXY_HOST}:${PROXY_PORT}"
-      ftp_proxy: "http://${PROXY_HOST}:${PROXY_PORT}"
-      rsync_proxy: "http://${PROXY_HOST}:${PROXY_PORT}"
-      no_proxy: "127.0.0.1, localhost"
+      http_proxy: "${PROXY_URL}"
+      https_proxy: "${PROXY_URL}"
+      ftp_proxy: "${PROXY_URL}"
+      rsync_proxy: "127.0.0.1,localhost,${NO_PROXY}"
+      no_proxy: "127.0.0.1,localhost,${NO_PROXY}"
       PROXY_HOST: "${PROXY_HOST}"
       PROXY_PORT: "${PROXY_PORT}"
     ports:
