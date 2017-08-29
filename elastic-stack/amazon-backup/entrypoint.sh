@@ -25,6 +25,10 @@ if [ ! "$(ls -A /etc/elasticsearch/repository-s3)" ]; then
     # install repository-s3 plugin
     /usr/share/elasticsearch/bin/elasticsearch-plugin install -b repository-s3
 
+    if [ ! -z "${PROXY_HOST}" ]; then
+        printf "cloud.aws.proxy.host: ${PROXY_HOST}\ncloud.aws.proxy.port: ${PROXY_PORT}\n" >> /etc/elasticsearch/elasticsearch.yml
+    fi
+
     service elasticsearch start
 
     # Wait for elasticsearch to be started
