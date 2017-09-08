@@ -1,4 +1,4 @@
-version: "2.0"
+version: "2.1"
 
 services:
   elastic-stack:
@@ -45,3 +45,8 @@ services:
       - "./logs/elasticsearch-backup:/var/log/elasticsearch-backup"
     entrypoint: ["/entrypoint.sh"]
     tty: true
+    healthcheck:
+      test: ["CMD", "curl", "--silent", "--fail", "http://localhost:9200/_cluster/health", "||" , "exit 1"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
