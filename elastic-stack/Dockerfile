@@ -21,9 +21,6 @@ RUN \
   apt-get install -y kibana && \
 # Install Logstash
   apt-get install -y logstash && \
-# clean system
-  apt-get clean && \
-  rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
 # Allow network access to Elasticsearch from the host
   sed -i "s/#network.host:.*/network.host: 0.0.0.0/" /etc/elasticsearch/elasticsearch.yml && \
   sed -i "s/#server.host:.*/server.host: 0.0.0.0/" /etc/kibana/kibana.yml
