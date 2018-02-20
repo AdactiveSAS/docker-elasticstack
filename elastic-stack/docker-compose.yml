@@ -1,26 +1,61 @@
-version: "2.0"
+version: "2.1"
 
 services:
   elastic-stack:
+    labels:
+      - "autoheal=true"
     build:
       context: .
+      args:
+        http_proxy: "${PROXY_URL}"
+        https_proxy: "${PROXY_URL}"
+        ftp_proxy: "${PROXY_URL}"
+        no_proxy: "127.0.0.1,localhost,${NO_PROXY}"
     restart: always
+    env_file:
+      - amazon-backup/.env
+    environment:
+      http_proxy: "${PROXY_URL}"
+      https_proxy: "${PROXY_URL}"
+      ftp_proxy: "${PROXY_URL}"
+      rsync_proxy: "127.0.0.1,localhost,${NO_PROXY}"
+      no_proxy: "127.0.0.1,localhost,${NO_PROXY}"
+      PROXY_HOST: "${PROXY_HOST}"
+      PROXY_PORT: "${PROXY_PORT}"
     ports:
-      - "5601:5601"
-      - "9200:9200"
-      - "9300:9300"
-      - "5044:5044"
+      - "127.0.0.1:5601:5601"
+      - "127.0.0.1:9200:9200"
+      - "127.0.0.1:9300:9300"
+      - "127.0.0.1:5044:5044"
     volumes:
-      # conf
+      # entrypoint
+      - "./amazon-backup/entrypoint.sh:/entrypoint.sh"
+      # elastic stack conf files
       - "./conf/logstash/conf.d/logstash.conf:/etc/logstash/conf.d/logstash.conf"
       - "./conf/logstash/patterns:/etc/logstash/patterns"
       - "./conf/logstash/templates:/etc/logstash/templates"
+      # elastic backup cron conf
+      - "./amazon-backup/elastic_db_backup.cron:/root/elastic_db_backup"
+      - "./amazon-backup/elastic_db_backup.js:/var/lib/elasticsearch-backup/elastic_db_backup.js"
       # database
-      - "./data:/var/lib/elacticsearch" 
+      - "./data:/var/lib/elasticsearch"
+      - "./repository-s3:/etc/elasticsearch/repository-s3"
       # logs
-      - "./logs/elasticsearch:/var/log/elasticsearch" 
-      - "./logs/kibana:/var/log/kibana" 
-      - "./logs/logstash:/var/log/logstash" 
-      - "./logs/elasticsearch-backup:/var/log/elasticsearch-backup" 
+      - "./logs/elasticsearch:/var/log/elasticsearch"
+      - "./logs/kibana:/var/log/kibana"
+      - "./logs/logstash:/var/log/logstash"
+      - "./logs/elasticsearch-backup:/var/log/elasticsearch-backup"
+    entrypoint: ["/entrypoint.sh"]
     tty: true
-    
+    healthcheck:
+      test: curl -f http://localhost:9200/_cluster/health
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+  autoheal:
+      restart: always
+      image: willfarrell/autoheal
+      environment:
+        AUTOHEAL_INTERVAL: 60
+      volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
