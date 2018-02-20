@@ -2,6 +2,8 @@ version: "2.1"
 
 services:
   elastic-stack:
+    labels:
+      autoheal: true
     build:
       context: .
       args:
@@ -50,3 +52,8 @@ services:
       interval: 1m30s
       timeout: 10s
       retries: 3
+  autoheal:
+      restart: always
+      image: willfarrell/autoheal
+      volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
